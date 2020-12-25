@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Form</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <form action="index.js" method="post">
+    <div class="form-page">
+      <div class="container">
+        <h2 align="center"> Form To Load JSON Data</h2>
+        <label for="question-select">
+          <h3>What is your age?</h3>
+        </label><br />
+        <select id="question1" class="form-control input-lg">
+          <option value="">--Please choose an option--</option>
+        </select>
+        <br />
+      </div>
+
+      <div class="container">
+        <label for="question-select">
+          <h3>What language do you prefer to read on webpage for understanding the event?</h3>
+        </label><br />
+        <select name="question2" id="question2" class="form-control input-lg">
+          <option value="">--Please choose an option--</option>
+        </select>
+        <br />
+      </div>
+
+      <div class="container">
+        <label for="question-select">
+          <h3>What type of event designs do you like?</h3>
+        </label><br />
+        <select name="question2" id="question3" class="form-control input-lg">
+          <option value="">--Please choose an option--</option>
+        </select> <br />
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit" name="button">Submit</button>
+      </div>
+
+
+
+    </div>
+  </form>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script>
+    $(function() {
+      const url = "data.json";
+      $('</form>', {
+        action: url,
+        method: 'POST'
+      }).append(
+        $('<input>', {
+          type: 'hidden',
+          id: 'id_field_1',
+          name: 'name_field_1',
+          value: val_field_1
+        }),
+        $('<input>', {
+          type: 'hidden',
+          id: 'id_field_2',
+          name: 'name_field_2',
+          value: val_field_2
+        }),
+      ).appendTo('body').submit();
+
+    });
+  </script>
+</body>
+
+</html>
