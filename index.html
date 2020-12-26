@@ -2,76 +2,59 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <<meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
-    <title>Form</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Form</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 </head>
 
 <body>
-  <form action="index.js" method="post">
-    <div class="form-page">
-      <div class="container">
-        <h2 align="center"> Form To Load JSON Data</h2>
-        <label for="question-select">
-          <h3>What is your age?</h3>
-        </label><br />
-        <select id="question1" class="form-control input-lg">
-          <option value="">--Please choose an option--</option>
-        </select>
-        <br />
-      </div>
 
-      <div class="container">
-        <label for="question-select">
-          <h3>What language do you prefer to read on webpage for understanding the event?</h3>
-        </label><br />
-        <select name="question2" id="question2" class="form-control input-lg">
-          <option value="">--Please choose an option--</option>
-        </select>
-        <br />
-      </div>
-
-      <div class="container">
-        <label for="question-select">
-          <h3>What type of event designs do you like?</h3>
-        </label><br />
-        <select name="question2" id="question3" class="form-control input-lg">
-          <option value="">--Please choose an option--</option>
-        </select> <br />
-      </div>
-
-      <div class="form-actions">
-        <button class="btn btn-primary" type="submit" name="button">Submit</button>
-      </div>
-
-
-
-    </div>
-  </form>
-
+  <!-- <form action="javascript:alert( 'success!' );" method="post">
+  <div>
+    <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+    <button type="submit" name="button">submit</button>
+  </div>
+</form>
+<span></span> -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script>
-
-    $( document ).ready(function() {
-      $.ajax("http://localhost:3000/") // replace this api with your api
+    $(document).ready(function() {
+      $.ajax("http://localhost:3000/data") // replace api with your api
         .done(function(data) {
-          console.log('data', data)
-          // write your form creation logic here
-        })
-        .fail(function() {
-          alert( "error" );
-        })
-        .always(function() {
-          alert( "complete" );
-        });
-    });
+          // console.log('data', data);
+          //  form creation logic here
+          var q, el, name, ar;
+          if (data.errorCode !== 0) return "error";
+          for (let i = 0; i < data.data.question.length; i++) {
+            q = data.data.question[i];
+            document.body.appendChild(document.createTextNode(q.content));
+            document.body.appendChild(document.createElement('br'));
+            name = 'option' + q.questionId;
+            for (let i = 0; i < q.option.length; i++) {
+              el = document.createElement('input');
+              el.name = name;
+              el.type = 'radio'
+              ar = Object.values(q.option[i])
+              document.body.appendChild(document.createTextNode(ar));
+              document.body.appendChild(el);
+              document.body.appendChild(document.createElement('br'));
+            }
+            document.body.appendChild(document.createElement('br'));
+          }
 
-   
+        });
+      //    .fail(function() {
+      //      alert( "error" );
+      //    });
+      //    .always(function() {
+      //      alert( "complete" );
+    });
   </script>
+
 </body>
 
 </html>
