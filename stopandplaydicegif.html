@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Stop And Play GIF</title>
+  <style media="screen">
+    img.gif {
+      visibility: hidden;
+    }
+
+    .jsgif {
+      position: relative;
+    }
+
+    .gifcontrol {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+
+      &:after {
+        transition: background 0.25s ease-in-out;
+        position: absolute;
+        content: "";
+        display: block;
+        left: calc(50% - 25px);
+        top: calc(50% - 25px);
+      }
+
+      &.loading {
+        background: rgba(255, 255, 255, 0.75);
+
+        &:after {
+          background: #FF9900;
+          width: 50px;
+          height: 50px;
+          border-radius: 50px;
+        }
+      }
+
+      &.playing {
+
+        /* Only show the 'stop' button on hover */
+        &:after {
+          opacity: 0;
+          transition: opacity 0.25s ease-in-out;
+          border-left: 20px solid #FF9900;
+          border-right: 20px solid #FF9900;
+          width: 50px;
+          height: 50px;
+          box-sizing: border-box;
+        }
+
+        &:hover:after {
+          opacity: 1;
+        }
+      }
+
+      &.paused {
+        background: rgba(255, 255, 255, 0.5);
+
+        &:after {
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-width: 25px 0 25px 50px;
+          border-color: transparent transparent transparent #ff9900;
+        }
+      }
+
+      transition: background 0.25s ease-in-out;
+      z-index: 100;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div style="width: 600px; margin: auto; text-align: center; font-family: arial">
+    <img src='images/dice-roll.gif' class='gif' />
+  </div>
+  <script>
+    var gifElements = document.querySelectorAll('images/dice-roll.gif');
+
+    for (var e in gifElements) {
+
+      var element = gifElements[e];
+
+      if (element.nodeName == 'IMG') {
+
+        var supergif = new SuperGif({
+          gif: element,
+          progressbar_height: 0,
+          auto_play: false,
+        });
+
+        var controlElement = document.createElement("div");
+        controlElement.className = "gifcontrol loading g" + e;
+
+        supergif.load((function(controlElement) {
+          controlElement.className = "gifcontrol paused";
+          var playing = false;
+          controlElement.addEventListener("click", function() {
+            if (playing) {
+              this.pause();
+              playing = false;
+              controlElement.className = "gifcontrol paused";
+            } else {
+              this.play();
+              playing = true;
+              controlElement.className = "gifcontrol playing";
+            }
+          }.bind(this, controlElement));
+
+        }.bind(supergif))(controlElement));
+
+        var canvas = supergif.get_canvas();
+        controlElement.style.width = canvas.width + "px";
+        controlElement.style.height = canvas.height + "px";
+        controlElement.style.left = canvas.offsetLeft + "px";
+        var containerElement = canvas.parentNode;
+        containerElement.appendChild(controlElement);
+
+      }
+    }
+  </script>
+</body>
+
+</html>
